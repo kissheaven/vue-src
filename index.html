@@ -12,7 +12,23 @@
   <div id="app">
     <script src="./dist/vue.js"></script>
     <script type="text/javascript">
-      var vue = new Vue()
+      console.log(this)
+      var vm = new Vue({
+        el:"#app",
+        data(){
+          return {
+            name:"xiaoming"
+          }
+        },
+        props:{
+
+        },
+        watch:{
+          
+        }
+      })
+      vm._data.name='xxxxxxx'
+      console.log(vm)
     </script>
   </div>
 </body>

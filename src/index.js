@@ -1,5 +1,9 @@
-function vv () {
-  console.log("sdfasdfasdf")
+import {initMixin} from './init.js'
+function Vue (options) {
+  this._init(options)
+
 }
 
-export default vv
+initMixin(Vue)
+
+export default Vue
