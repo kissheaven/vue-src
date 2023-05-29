@@ -1,0 +1,1 @@
+{"version":3,"file":"vue.js","sources":["../src/index.js"],"sourcesContent":["function vv () {\r\n  console.log(\"sdfasdfasdf\")\r\n}\r\n\r\nexport default vv"],"names":[],"mappings":";;;;;;EAAA,SAAS,EAAE,IAAI;EACf,EAAE,OAAO,CAAC,GAAG,CAAC,aAAa,EAAC;EAC5B;;;;;;;;"}
