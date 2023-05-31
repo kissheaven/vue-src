@@ -4,6 +4,38 @@
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Vue = factory());
 })(this, (function () { 'use strict';
 
+    let oldArrayProtoMethods = Array.prototype;
+
+    let ArrayMethods = Object.create(oldArrayProtoMethods);
+
+    let methods = [
+        'push',
+        'pop',
+        'unshift',
+        'shift',
+        'splice'
+    ];
+
+    methods.forEach(item=>{
+        ArrayMethods[item] = function(...arg){
+            console.log("操作数组了");
+            let result = oldArrayProtoMethods[item].apply(this,arg);
+            let inserted;
+            switch (item) {
+                case 'push':
+                case 'unshift':
+                    inserted = arg;
+                    break;
+                case 'splice':
+                    inserted = arg.splice(2);
+            }
+            if(inserted){
+                this.__ob__.observerArray(inserted);
+            }
+            return result
+        };
+    });
+
     function observer(data){
         if(typeof data !="object" || data  == null){
             return data
@@ -14,7 +46,17 @@
 
     class Observer{
         constructor(data){
-            this.walk(data);
+            Object.defineProperty(data,"__ob__",{
+                enumerable:false,
+                value:this
+            });
+            if(Array.isArray(data)){
+                data.__proto__= ArrayMethods;
+                this.observerArray(data);
+            }else {
+                this.walk(data);
+            }
+            
         }
         walk(data){
             let keys = Object.keys(data);
@@ -22,6 +64,11 @@
                 let key = keys[i];
                 let value = data[key];
                 defineReactive(data,key,value);
+            }
+        }
+        observerArray(data){
+            for(let i =0;i<data.length;i++){
+                observer(data[i]);
             }
         }
 

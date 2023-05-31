@@ -1,3 +1,4 @@
+import {ArrayMethods} from './arr'
 export function observer(data){
     if(typeof data !="object" || data  == null){
         return data
@@ -8,7 +9,17 @@ export function observer(data){
 
 class Observer{
     constructor(data){
-        this.walk(data)
+        Object.defineProperty(data,"__ob__",{
+            enumerable:false,
+            value:this
+        })
+        if(Array.isArray(data)){
+            data.__proto__= ArrayMethods
+            this.observerArray(data)
+        }else{
+            this.walk(data)
+        }
+        
     }
     walk(data){
         let keys = Object.keys(data)
@@ -16,6 +27,11 @@ class Observer{
             let key = keys[i]
             let value = data[key]
             defineReactive(data,key,value)
+        }
+    }
+    observerArray(data){
+        for(let i =0;i<data.length;i++){
+            observer(data[i])
         }
     }
 

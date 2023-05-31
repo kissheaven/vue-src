@@ -17,7 +17,8 @@
         el:"#app",
         data(){
           return {
-            name:"xiaoming"
+            name:"xiaoming",
+            child:["a","b"]
           }
         },
         props:{
@@ -29,6 +30,7 @@
       })
       vm._data.name='xxxxxxx'
       console.log(vm)
+      vm._data.child.push("c")
     </script>
   </div>
 </body>
